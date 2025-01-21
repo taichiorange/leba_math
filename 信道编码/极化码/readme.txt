@@ -1,0 +1,2 @@
+simulation_polar_code_decoder_SC_SCL_CRCSCL_for_new_crc_functions.m
+	网友 666 帮忙修改的版本，把 CRC 相关的功能用了 matlab 中最新的函数。

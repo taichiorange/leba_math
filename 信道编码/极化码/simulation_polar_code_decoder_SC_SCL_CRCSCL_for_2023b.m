@@ -233,10 +233,15 @@ function [crc_obj,crc_det] = get_crc_objective(crc_length)
             Polynomial = "x^24 + x^23 + x^6 + x^5 + x + 1";
         otherwise
             disp('Unsupported CRC length. Program terminates')
+            Polynomial = ""
     end
-
-     crc_obj = comm.CRCGenerator(Polynomial = Polynomial);
-     crc_det = comm.CRCDetector(Polynomial = Polynomial);
+    if ~strcmp(Polynomial, "")
+         crc_obj = comm.CRCGenerator(Polynomial = Polynomial);
+         crc_det = comm.CRCDetector(Polynomial = Polynomial);
+    else
+        % Throw an error if the Polynomial is empty
+        error('No valid CRC Polynomial found. Ensure a supported CRC length is provided.');
+    end
 end
 
 

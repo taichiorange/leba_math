@@ -3,15 +3,16 @@ clearvars; clc;
 %---------Input Fields------------------------
 nSym=10^4;%Number of symbols to transmit
 channelModel = 'AWGN'; %channel model - 'AWGN' or 'RAYLEIGH'
-snrdB = -10:0.1:40; % SNRs in dB for noise generation
+snrdB = -10:1:80; % SNRs in dB for noise generation
 MOD_TYPE='QAM'; %Set 'PSK' or 'QAM' or 'PAM'
 %arrayOfM=[2,4,8,16]; %array of M values to simulate
 arrayOfM=[4,16,64,256]; %array of M values for MOD_TYPE='QAM',for QAM, must be 2^2,2^4,2^6,2^8,.....
 
 plotColor =['b','g','c','m','k']; j=1; %plot colors/color index
 legendString = cell(1,length(arrayOfM)); %for legend entries
+C = zeros(length(arrayOfM),length(snrdB));%capacity
 for M = arrayOfM
-    C = zeros(1,length(snrdB));%capacity
+
     
     d=ceil(M.*rand(1,nSym));%uniformly distributed source syms
     [s,constellation]=modulate(MOD_TYPE,M,d);%constellation mapping
@@ -30,9 +31,9 @@ for M = arrayOfM
         p = max(pdfs,realmin);%prob of each constellation points
         p = p./ (ones(M,1)*sum(p)); %normalize probabilities   
         symEntropy = -sum(p.*log2(p)); %senders uncertainity   
-        C(i)=log2(M)-mean(symEntropy);%bits/sym-senders uncertainity       
+        C(j,i)=log2(M)-mean(symEntropy);%bits/sym-senders uncertainity       
     end
-    plot(snrdB,C,'LineWidth',1.0,'Color',plotColor(j)); hold on;
+    plot(snrdB,C(j,:),'LineWidth',1.0,'Color',plotColor(j)); hold on;
     legendString{j}=[num2str(M),'-', MOD_TYPE];j=j+1;
 end
 legend(legendString);

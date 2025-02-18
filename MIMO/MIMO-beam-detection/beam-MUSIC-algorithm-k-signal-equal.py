@@ -20,7 +20,6 @@ def steering_vector(k, N):
 NSamples = 100
 
 # generate signals
-s = np.exp(1j * 2 * np.pi * np.random.rand(NSamples))  # random signals
 X = np.zeros((N, NSamples), dtype=complex)
 for i in range(M):
     a_k = steering_vector(k_true[i], N)

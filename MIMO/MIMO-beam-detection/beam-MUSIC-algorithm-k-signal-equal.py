@@ -10,7 +10,7 @@ N = 8  # number of antennas
 M = 5   # number of beams
 kA = 3  # number of signals which are equal.
 k_true = np.array([0.3, 0.4,0.5,0.6,0.7])  # beam angles
-SNR = 5  # 信噪比(dB)
+SNR = 5  # (dB)
 
 # create a manifold vector
 def steering_vector(k, N):

@@ -91,7 +91,7 @@ def root_music(R, num_sources, d=0.5, wavelength=1.0):
     doa_estimates_rad = np.arcsin(phi / beta)
     doa_estimates_deg = np.rad2deg(doa_estimates_rad)
     
-    return np.sort(doa_estimates_deg)
+    return np.sort(doa_estimates_deg),roots_all
 
 if __name__ == "__main__":
     # Simulation parameters
@@ -110,18 +110,10 @@ if __name__ == "__main__":
     
     # Estimate the DOAs using the Root-MUSIC algorithm
     num_sources = len(doa_true)
-    doa_est = root_music(R, num_sources, d, wavelength)
+    doa_est,roots_all = root_music(R, num_sources, d, wavelength)
     
     print("True DOAs (degrees):", doa_true)
     print("Estimated DOAs (degrees):", doa_est)
-    
-    # Plot the distribution of the polynomial roots in the complex plane (optional)
-    En = eigh(R)[1][:, :num_sensors - num_sources]
-    Pn = En @ En.conj().T
-    c = np.array([np.sum(np.diag(Pn, k)) for k in range(-num_sensors+1, num_sensors)])
-    c = c / c[num_sensors - 1]
-    poly_coeffs = c[::-1]
-    roots_all = np.roots(poly_coeffs)
     
     plt.figure(figsize=(6,6))
     theta = np.linspace(0, 2*np.pi, 400)

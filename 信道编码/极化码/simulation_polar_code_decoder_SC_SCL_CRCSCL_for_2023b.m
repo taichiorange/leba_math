@@ -497,7 +497,7 @@ end
 
 
 function polar_info_esti = CASCL_decoder(llr, L, K, frozen_bits, ...
-   crcdetector,crc_obj,lambda_offset, llr_layer_vec, bit_layer_vec)
+    crc_obj,crcdetector,lambda_offset, llr_layer_vec, bit_layer_vec)
 %LLR-based SCL deocoder, a single function, no other sub-functions.
 %Frequently calling sub-functions will derease the efficiency of MATLAB
 %codes.
@@ -684,7 +684,7 @@ for l_index = 1 : L
     path_num = path_ordered(l_index);
     info_with_crc = u(:, path_num);
 %     err = sum(mod(H_crc * info_with_crc, 2));
-    err=crcdetector(info_with_crc);
+    [~, err] = crcdetector(info_with_crc);
     if err == 0
         polar_info_esti = u(:, path_num);
         break;

@@ -7,15 +7,15 @@ from numpy.random import randint
 from numpy.random import randn
 from numpy import sqrt
 
-Nt = 8;
-Nr = Nt;
+Nt = 8
+Nr = Nt
 
 N = int(1e4)
 
 SNRs = np.arange(-10,30,2)
 
-BERs_ZF = np.zeros(np.size(SNRs));
-BERs_ZF_SIC = np.zeros(np.size(SNRs));
+BERs_ZF = np.zeros(np.size(SNRs))
+BERs_ZF_SIC = np.zeros(np.size(SNRs))
 
 x_hat_SIC = np.zeros([Nt,1])
 
@@ -38,18 +38,18 @@ for kk in range(0,len(SNRs)):
         
         # zero forcing
         x_hat = np.linalg.inv((H.H@ H)) @ H.H @ y
-        x_hat = 2*(x_hat>0)-1;
-        NerrorZF = NerrorZF + sum( x != x_hat)
+        x_hat = 2*(x_hat>0)-1
+        NerrorZF = NerrorZF + np.sum( x != x_hat)
         
         # zero forcing with SIC
         for jj in range(0,Nt):
             x_hat = np.linalg.inv((H.H@ H)) @ H.H @ y
-            x_hat = 2*(x_hat>0)-1;
+            x_hat = 2*(x_hat>0)-1
             
             x_hat_SIC[Nt-jj-1] = x_hat[-1,0]
             y = y - H[:,Nt-jj-1] * x_hat_SIC[Nt-jj-1]
             H = H[:,0:Nt-jj-1]
-        NerrorZF_SIC = NerrorZF_SIC + sum( x != x_hat_SIC)
+        NerrorZF_SIC = NerrorZF_SIC + np.sum( x != x_hat_SIC)
         
     BERs_ZF[kk] = NerrorZF/(N*Nt)
     BERs_ZF_SIC[kk] = NerrorZF_SIC/(N*Nt)
@@ -61,6 +61,6 @@ ax = fig.add_subplot(1,1,1)
 ax.semilogy(SNRs,BERs_ZF,label="ZF")
 ax.semilogy(SNRs,BERs_ZF_SIC,label="ZF_SIC")
 ax.legend()
-ax.grid(b=True, which='major', linestyle='-')
-ax.grid(b=True, which='minor', linestyle='--')
-
+ax.grid(visible=True, which='major', linestyle='-')
+ax.grid(visible=True, which='minor', linestyle='--')
+plt.show()

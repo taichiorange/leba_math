@@ -2,8 +2,8 @@
 
 
 Nsymb = 1e5;
-Ntx = 2;
-Nrx = 2;
+Ntx = 4;
+Nrx = 4;
 Rate = 4;
 CN_db = 0;
 vec_SNR = [-10:30];

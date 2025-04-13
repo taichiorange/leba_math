@@ -12,7 +12,7 @@ vec_BER = [];
 for ii=vec_SNR
     SNR = ii;
     
-    H = 1/sqrt(Nt) *complex(randn(Ntx,Nrx,Nsymb),randn(Ntx,Nrx,Nsymb));
+    H = 1/sqrt(Ntx) *complex(randn(Ntx,Nrx,Nsymb),randn(Ntx,Nrx,Nsymb));
     
     NoiseVar = db2pow(-SNR);
     B = randi([0 2^Rate-1],Ntx,Nsymb);

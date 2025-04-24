@@ -8,7 +8,7 @@ import numpy as np
 # Polar encode x without using recursion
 # x = message bit field
 # it seems that using G matrix is not faster than not-using G.
-def polarEncode(x,N,frozen,G=None):
+def polarEncode(x,N,frozen=None,G=None):
     """
     Encodes a message using polar coding with a non-recursive implementation.
     The message x is encoded using in-place operations of output u.
@@ -17,10 +17,12 @@ def polarEncode(x,N,frozen,G=None):
 
     # fill frozen bits and data bits x
     u = np.zeros(N,dtype=int)
-    
-    lut = np.ones(N, dtype=int)
-    lut[frozen] = 0
-    u[lut==1] = x
+    if frozen is not None:
+        lut = np.ones(N, dtype=int)
+        lut[frozen] = 0
+        u[lut==1] = x
+    else:
+        u = x
 
     # loop over the M stages
     #if G is None:

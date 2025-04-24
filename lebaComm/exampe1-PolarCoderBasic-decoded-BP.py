@@ -17,7 +17,7 @@ from polarcode.polardecoder import polarBpDecode
 
 n = 9
 N = 2**n
-K = N - 128
+K = N - 128    # raw data length
 
 # mothercode construction
 design_SNR  = 5.0
@@ -52,7 +52,7 @@ for i in range(len(realSnr)):
         pcLlr = pskdemod(txData,pNoise,M=2,OutputType="llr")
 
         messageReceived = polarScDecode(pcLlr,N,frozen)
-        messageReceivedByBpDec = polarBpDecode(pcLlr,N,frozen,maxIter=1)
+        messageReceivedByBpDec = polarBpDecode(pcLlr,N,frozen)
         errN += np.sum(messageReceived != message)
         errNBp += np.sum(messageReceivedByBpDec != message)
 

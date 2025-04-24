@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 # 这个执行的速度比较慢，没有并行。如果为了提高速度，请参考类似名称的文件，是多进程并行执行的版本。
+# This version runs relatively slowly as it does not use parallel execution. 
+# For improved speed, please refer to the similarly named file, which uses multiprocessing for parallel execution.
 
 import numpy as np
 import matplotlib.pyplot as plt

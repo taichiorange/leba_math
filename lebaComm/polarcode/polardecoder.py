@@ -124,7 +124,13 @@ def polarBpDecode(likelihoodsRatio,N,frozen,maxIter=20,order=None):
                     B = A
                     C = groupId * num_in_group + index + (num_in_group // 2)
                     D = C
-
+                    #  A <------------- + <------------- B
+                    #                   ^
+                    #                   |
+                    #                   |
+                    #                   |
+                    #                   |
+                    #  C --------------> <--------------- D 
                     alpha = data_graph[layer][B].R2L
                     beta = data_graph[layer][D].R2L + data_graph[layer-1][C].L2R
                     temp_value = box_plus(alpha, beta)
@@ -134,6 +140,13 @@ def polarBpDecode(likelihoodsRatio,N,frozen,maxIter=20,order=None):
                         temp_value = -inf
                     data_graph[layer-1][A].R2L = temp_value
 
+                    #  A -------------> + <------------- B
+                    #                   |
+                    #                   |
+                    #                   |
+                    #                   |
+                    #                   v
+                    #  C <-------------- <--------------- D
                     alpha = data_graph[layer][B].R2L
                     beta = data_graph[layer-1][A].L2R
                     temp_value = box_plus(alpha, beta)
@@ -155,7 +168,13 @@ def polarBpDecode(likelihoodsRatio,N,frozen,maxIter=20,order=None):
                     B = A
                     C = groupId * num_in_group + index + (num_in_group // 2)
                     D = C
-
+                    #  A -------------> + -------------> B
+                    #                   ^
+                    #                   |
+                    #                   |
+                    #                   |
+                    #                   |
+                    #  C --------------> <--------------- D 
                     alpha = data_graph[layer][A].L2R
                     beta = data_graph[layer][C].L2R + data_graph[layer+1][D].R2L
                     temp_value = box_plus(alpha, beta)
@@ -164,7 +183,13 @@ def polarBpDecode(likelihoodsRatio,N,frozen,maxIter=20,order=None):
                     elif temp_value < -inf:
                         temp_value = -inf
                     data_graph[layer+1][B].L2R = temp_value
-
+                    #  A -------------> + <------------- B
+                    #                   |
+                    #                   |
+                    #                   |
+                    #                   |
+                    #                   v
+                    #  C --------------> ---------------> D
                     alpha = data_graph[layer][A].L2R
                     beta = data_graph[layer+1][B].R2L
                     temp_value = box_plus(alpha, beta)

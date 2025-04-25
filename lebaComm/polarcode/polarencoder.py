@@ -16,13 +16,14 @@ def polarEncode(x,N,frozen=None,G=None):
     """
 
     # fill frozen bits and data bits x
-    u = np.zeros(N,dtype=int)
+    
     if frozen is not None:
+        u = np.zeros(N,dtype=int)
         lut = np.ones(N, dtype=int)
         lut[frozen] = 0
         u[lut==1] = x
     else:
-        u = x
+        u = x.copy()
 
     # loop over the M stages
     #if G is None:

@@ -200,7 +200,7 @@ def polarBpDecode(likelihoodsRatio,N,frozen,maxIter=20,order=None):
                         temp_value = -inf
                     data_graph[layer+1][D].L2R = temp_value
 
-        # 硬判决：根据最左层（layer 0）和最右层（layer noOfLayers）的 L2R 和 R2L 值进行硬判决
+        # 硬判决：根据最左层（layer 0）的 L2R 和 R2L 值进行硬判决
         # Hard decision: make hard decisions based on the L2R and R2L values from the leftmost layer (layer 0) and the rightmost layer (layer noOfLayers)
         for index in range(N):
             soft_info = data_graph[0][index].L2R + data_graph[0][index].R2L
@@ -217,8 +217,7 @@ def polarBpDecode(likelihoodsRatio,N,frozen,maxIter=20,order=None):
         # 对 hd_layer0 进行一次编码，与 hd_layern 比较，若相同则认为 BP 收敛
         # Perform a encoding on hd_layer0 and compare it with hd_layern. If they are the same, consider BP converged.
         IsSuccess = True
-        hd_temp = hd_layer0.copy()
-        hd_temp = polarEncode(hd_temp, N)
+        hd_temp = polarEncode(hd_layer0, N)
         for index in range(N):
             if hd_temp[index] != hd_layern[index]:
                 IsSuccess = False

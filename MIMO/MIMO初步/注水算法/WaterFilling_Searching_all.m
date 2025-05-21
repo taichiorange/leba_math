@@ -9,7 +9,7 @@ for x=0:dT:1
        if y>(1-x)
 		z=0;
 	else
-		z = log2(1+Lambda(1)*x) + log2(1+Lambda(1)*y) + log2(1+Lambda(1)*(1-x-y));
+		z = log2(1+Lambda(1)*x) + log2(1+Lambda(2)*y) + log2(1+Lambda(3)*(1-x-y));
 	end
 	Z(i,j) = z;
 	j=j+1;

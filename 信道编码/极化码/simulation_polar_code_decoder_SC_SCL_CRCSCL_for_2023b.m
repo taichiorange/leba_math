@@ -1,7 +1,7 @@
 % 这个版本的 crc 是使用 comm.CRCGenerator 和 comm.CRCDetector
 % 适用于 Matlab 24a 之前的，即没有引入 crcConfig(从 R2024a 版本开始引入的)
 crc_len = 4;  %CRC校验位长度
-n = 3; % n = 8;
+n = 8; % n = 8;
 N = 2^n; %极化码长度
 R=0.5;   %码率
 max_runs = 1000; %最大运行次数

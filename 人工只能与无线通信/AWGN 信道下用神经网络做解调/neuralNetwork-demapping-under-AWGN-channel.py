@@ -35,13 +35,14 @@ from sionna.phy import Block
 # 0. 全局参数配置
 # ==========================================
 NUM_BITS_PER_SYMBOL = 6  # 16QAM (可配: 2=QPSK, 4=16QAM, 6=64QAM)
-BLOCK_LENGTH = 1024      # 每帧传输的符号数量 (时域序列长度)
-BATCH_SIZE = 100         # 训练时的 Batch Size
-NUM_CONV_CHANNELS = 128  # 卷积层的通道数/特征数
+BLOCK_LENGTH = 123      # 每帧传输的符号数量 (时域序列长度)
+BATCH_SIZE = 199         # 训练时的 Batch Size
+NUM_CONV_CHANNELS = 268  # 卷积层的通道数/特征数
 LEARNING_RATE = 1e-4     # 学习率
-TRAINING_STEPS = 3000    # 训练迭代次数
+TRAINING_STEPS = 6000    # 训练迭代次数
 EBN0_DB_MIN = 0        # 训练信噪比最小值
 EBN0_DB_MAX = 20.0       # 训练信噪比最大值
+KERNEL_SIZE = 5         # 卷积核大小
 
 # ==========================================
 # 1. 神经网络组件 (改为 1D)
@@ -56,13 +57,13 @@ class ResidualBlock1D(Layer):
         # 1D 归一化: axis=(-1, -2) 对应 (Features, Time)
         self._layer_norm_1 = LayerNormalization(axis=(-1, -2))
         self._conv_1 = Conv1D(filters=NUM_CONV_CHANNELS,
-                              kernel_size=3,
+                              kernel_size=KERNEL_SIZE,
                               padding='same',
                               activation=None)
         
         self._layer_norm_2 = LayerNormalization(axis=(-1, -2))
         self._conv_2 = Conv1D(filters=NUM_CONV_CHANNELS,
-                              kernel_size=3,
+                              kernel_size=KERNEL_SIZE,
                               padding='same',
                               activation=None)
 
@@ -86,7 +87,7 @@ class NeuralReceiver1D(Layer):
     def build(self, input_shape):
         # 输入层卷积
         self._input_conv = Conv1D(filters=NUM_CONV_CHANNELS,
-                                  kernel_size=3,
+                                  kernel_size=KERNEL_SIZE,
                                   padding='same',
                                   activation=None)
         
@@ -95,7 +96,7 @@ class NeuralReceiver1D(Layer):
         
         # 输出层: 输出通道数 = 每个符号的比特数 (对应 LLR)
         self._output_conv = Conv1D(filters=NUM_BITS_PER_SYMBOL,
-                                   kernel_size=3,
+                                   kernel_size=KERNEL_SIZE,
                                    padding='same',
                                    activation=None)
 
@@ -209,8 +210,7 @@ def run_training_and_eval():
 
     # 这个是用于生成静态图，可以用 GPU 并行运算来加速，但是，不方便单步调试。
     # 如果要单步调试，可以把 @tf.function 注释掉
-    @tf.function(jit_compile=True)
-    
+    @tf.function(jit_compile=True) 
     def train_step(batch_size):
         # 训练时随机采样 Eb/N0，增加鲁棒性
         ebn0_db = tf.random.uniform([batch_size], EBN0_DB_MIN, EBN0_DB_MAX)

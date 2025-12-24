@@ -38,11 +38,13 @@ NUM_BITS_PER_SYMBOL = 6  # 16QAM (可配: 2=QPSK, 4=16QAM, 6=64QAM)
 BLOCK_LENGTH = 123      # 每帧传输的符号数量 (时域序列长度)
 BATCH_SIZE = 199         # 训练时的 Batch Size
 NUM_CONV_CHANNELS = 268  # 卷积层的通道数/特征数
+KERNEL_SIZE = 5         # 卷积核大小
+
 LEARNING_RATE = 1e-4     # 学习率
 TRAINING_STEPS = 6000    # 训练迭代次数
 EBN0_DB_MIN = 0        # 训练信噪比最小值
 EBN0_DB_MAX = 20.0       # 训练信噪比最大值
-KERNEL_SIZE = 5         # 卷积核大小
+
 
 # ==========================================
 # 1. 神经网络组件 (改为 1D)
